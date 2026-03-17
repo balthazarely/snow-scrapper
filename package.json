@@ -9,6 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.90.21",
+    "@tanstack/react-query-devtools": "^5.91.3",
     "@vercel/kv": "^3.0.0",
     "cheerio": "^1.2.0",
     "next": "16.1.7",

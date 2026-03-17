@@ -16,7 +16,7 @@ export async function GET() {
   const resorts = JSON.parse(raw as string);
 
   return Response.json({
-    lastScraped, // ← when the cron actually ran
+    lastScraped,
     count: resorts.length,
     resorts,
   });
