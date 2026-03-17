@@ -2,6 +2,7 @@
 import { useParams, useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { MdArrowBack } from "react-icons/md";
+import PassBadge from "@/components/PassBadge";
 import { Resort } from "@/types/Resort";
 import { DailyForecast } from "@/types/ResortWeather";
 import { useResortWeather } from "@/hooks/useResortWeather";
@@ -78,10 +79,10 @@ export default function ResortPage() {
   if (!resort) return <div className="p-4 text-zinc-400">Resort not found</div>;
 
   return (
-    <div className="p-4 max-w-5xl mx-auto">
+    <div className="p-4 pb-[calc(5rem+env(safe-area-inset-bottom)+1rem)]">
 
       {/* Header */}
-      <div className="mb-4 px-1">
+      <div className="mb-4">
         <button
           onClick={() => router.back()}
           className="flex items-center gap-1 text-sm text-zinc-400 hover:text-zinc-600 transition-colors mb-3"
@@ -91,11 +92,7 @@ export default function ResortPage() {
         </button>
         <div className="flex items-center gap-2">
           <h1 className="text-2xl font-bold text-zinc-900">{resort.name}</h1>
-          {resort.pass && (
-            <span className="rounded-full bg-sky-50 border border-sky-100 px-2 py-0.5 text-xs font-medium text-sky-600">
-              {resort.pass}
-            </span>
-          )}
+          <PassBadge pass={resort.pass} />
         </div>
         <p className="text-sm text-zinc-400 mt-0.5">
           {resort.base.toLocaleString()}–{resort.summit.toLocaleString()} ft · Colorado

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useUserPrefs } from "@/context/UserPrefsContext";
 import { Resort } from "@/types/Resort";
 import { MdBookmark, MdBookmarkBorder } from "react-icons/md";
+import { toast } from "sonner";
+import PassBadge from "@/components/PassBadge";
 
 export default function ResortCard({ resort }: { resort: Resort }) {
   const { isFavorite, toggleFavorite } = useUserPrefs();
@@ -24,13 +26,11 @@ export default function ResortCard({ resort }: { resort: Resort }) {
                   {resort.name}
                 </h2>
               </Link>
-              {resort.pass && (
-                <span className="rounded-full bg-sky-50 border border-sky-100 px-2 py-0.5 text-xs font-medium text-sky-600">
-                  {resort.pass}
-                </span>
-              )}
+              <PassBadge pass={resort.pass} />
             </div>
-            <span className="text-xs text-zinc-400 capitalize mt-1 block">{resort.conditions}</span>
+            <span className="text-xs text-zinc-400 capitalize mt-1 block">
+              {resort.conditions}
+            </span>
           </div>
           <button
             onClick={() => toggleFavorite(resort.name)}
@@ -44,20 +44,26 @@ export default function ResortCard({ resort }: { resort: Resort }) {
         {/* Stats row */}
         <div className="mt-3 grid grid-cols-3 divide-x divide-zinc-100">
           <div className="text-center pr-2">
-            <p className="text-xl font-bold text-orange-400">{resort.snowfall3d}"</p>
+            <p className="text-xl font-bold text-orange-400">
+              {resort.snowfall3d}"
+            </p>
             <p className="text-xs text-zinc-400 mt-0.5">3-day snow</p>
           </div>
           <div className="text-center px-2">
             <p className="text-xl font-bold text-zinc-900">
               {resort.openLifts}
-              <span className="text-sm font-normal text-zinc-300">/{resort.totalLifts}</span>
+              <span className="text-sm font-normal text-zinc-300">
+                /{resort.totalLifts}
+              </span>
             </p>
             <p className="text-xs text-zinc-400 mt-0.5">lifts open</p>
           </div>
           <div className="text-center pl-2">
             <p className="text-xl font-bold text-zinc-900">
               {resort.openTrails}
-              <span className="text-sm font-normal text-zinc-300">/{resort.totalTrails}</span>
+              <span className="text-sm font-normal text-zinc-300">
+                /{resort.totalTrails}
+              </span>
             </p>
             <p className="text-xs text-zinc-400 mt-0.5">trails open</p>
           </div>

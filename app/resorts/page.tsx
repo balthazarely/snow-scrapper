@@ -3,16 +3,14 @@
 import useResorts from "@/hooks/useResorts";
 import ResortCard from "@/components/ResortCard";
 import ResortCardSkeleton from "@/components/ResortCardSkeleton";
+import PageHeader from "@/components/PageHeader";
 
 export default function ResortsPage() {
   const { data: resorts, isLoading } = useResorts();
 
   return (
-    <div className="p-4 bg-slate-100">
-      <h1 className="text-2xl font-bold text-zinc-900">Resorts</h1>
-      <p className="mt-0.5 text-sm text-zinc-400">
-        Current conditions across Colorado
-      </p>
+    <div className="p-4 bg-slate-100 pb-[calc(5rem+env(safe-area-inset-bottom)+1rem)]">
+      <PageHeader title="Resorts" subtitle="Current conditions across Colorado" />
 
       {isLoading && (
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">

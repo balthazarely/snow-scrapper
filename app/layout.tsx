@@ -18,7 +18,6 @@ export const metadata: Metadata = {
   title: "PowderScout",
   description: "Colorado ski resort snow conditions",
   manifest: "/manifest.json",
-  themeColor: "#4a9eff",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",

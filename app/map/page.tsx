@@ -1,10 +1,15 @@
+import PageHeader from "@/components/PageHeader";
+import SkiMap from "@/components/SkiResortMap";
+
 export default function MapPage() {
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold text-zinc-900 dark:text-white">Map</h1>
-      <p className="mt-1 text-sm text-zinc-500">Resort locations across Colorado</p>
-      <div className="mt-6 flex h-64 items-center justify-center rounded-xl bg-zinc-200 dark:bg-zinc-800">
-        <p className="text-sm text-zinc-400">Map coming soon</p>
+    <div className="flex flex-col" style={{ height: "100%" }}>
+      <div className="p-4 shrink-0">
+        <PageHeader title="Resort Map" subtitle="Resorts in Colorado" />
+      </div>
+
+      <div className="flex-1 min-h-0">
+        <SkiMap />
       </div>
     </div>
   );

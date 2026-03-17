@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useState } from "react";
 import { UserPrefsProvider } from "@/context/UserPrefsContext";
 import { AppProvider } from "@/context/AppContext";
+import { Toaster } from "sonner";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -24,6 +25,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       <AppProvider>
         <UserPrefsProvider>{children}</UserPrefsProvider>
       </AppProvider>
+      <Toaster position="top-center" richColors />
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );

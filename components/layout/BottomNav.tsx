@@ -53,7 +53,7 @@ export default function BottomNav() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-zinc-200 bg-white pb-[env(safe-area-inset-bottom)] dark:border-zinc-800 dark:bg-zinc-950">
-      <ul className="flex h-16">
+      <ul className="flex h-20">
         {navItems.map(({ label, href, icon }) => {
           const active = pathname === href;
           return (

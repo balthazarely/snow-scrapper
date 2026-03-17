@@ -1,6 +1,13 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import { toast } from "sonner";
 
 type UserPrefs = {
   favoriteResorts: string[];
@@ -37,15 +44,18 @@ export function UserPrefsProvider({ children }: { children: ReactNode }) {
   }, [prefs]);
 
   const toggleFavorite = (resortName: string) => {
-    setPrefs((prev) => {
-      const isFav = prev.favoriteResorts.includes(resortName);
-      return {
-        ...prev,
-        favoriteResorts: isFav
-          ? prev.favoriteResorts.filter((r) => r !== resortName)
-          : [...prev.favoriteResorts, resortName],
-      };
-    });
+    const isFav = prefs.favoriteResorts.includes(resortName);
+    if (isFav) {
+      toast(`Removed ${resortName} from favorites`);
+    } else {
+      toast.success(`Added ${resortName} to favorites`);
+    }
+    setPrefs((prev) => ({
+      ...prev,
+      favoriteResorts: isFav
+        ? prev.favoriteResorts.filter((r) => r !== resortName)
+        : [...prev.favoriteResorts, resortName],
+    }));
   };
 
   const isFavorite = (resortName: string) =>
@@ -68,6 +78,7 @@ export function UserPrefsProvider({ children }: { children: ReactNode }) {
 
 export function useUserPrefs() {
   const ctx = useContext(UserPrefsContext);
-  if (!ctx) throw new Error("useUserPrefs must be used within UserPrefsProvider");
+  if (!ctx)
+    throw new Error("useUserPrefs must be used within UserPrefsProvider");
   return ctx;
 }
