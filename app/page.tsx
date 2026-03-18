@@ -7,7 +7,6 @@ import Image from "next/image";
 import ResortCardMini from "@/components/ResortCardMini";
 import ResortCardSkeleton from "@/components/ResortCardSkeleton";
 import LocationCard from "@/components/LocationCard";
-import UserPrefsCard from "@/components/UserPrefsCard";
 import SettingsModal from "@/components/SettingsModal";
 import MorningReport from "@/components/MorningReport";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
@@ -34,7 +33,7 @@ export default function Home() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/50" />
         <div className="absolute bottom-0 left-0 p-4">
-          <h1 className="text-2xl font-bold text-white">Snow Scrapper</h1>
+          <h1 className="text-2xl font-bold text-white">Snow Scraper</h1>
           <p className="text-sm text-white/70">Colorado snow conditions</p>
         </div>
         {/* Dark mode toggle */}
