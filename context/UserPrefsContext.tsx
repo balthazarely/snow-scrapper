@@ -12,11 +12,15 @@ import { toast } from "sonner";
 type UserPrefs = {
   favoriteResorts: string[];
   darkMode: boolean;
+  pass: "Epic" | "Ikon" | null;
+  useLocation: boolean;
 };
 
 const DEFAULTS: UserPrefs = {
   favoriteResorts: [],
   darkMode: false,
+  pass: null,
+  useLocation: true,
 };
 
 type UserPrefsContextValue = {
@@ -25,6 +29,8 @@ type UserPrefsContextValue = {
   isFavorite: (resortName: string) => boolean;
   setDarkMode: (value: boolean) => void;
   toggleDarkMode: () => void;
+  setPass: (pass: "Epic" | "Ikon" | null) => void;
+  setUseLocation: (value: boolean) => void;
 };
 
 const UserPrefsContext = createContext<UserPrefsContextValue | null>(null);
@@ -67,9 +73,15 @@ export function UserPrefsProvider({ children }: { children: ReactNode }) {
   const toggleDarkMode = () =>
     setPrefs((prev) => ({ ...prev, darkMode: !prev.darkMode }));
 
+  const setPass = (pass: "Epic" | "Ikon" | null) =>
+    setPrefs((prev) => ({ ...prev, pass }));
+
+  const setUseLocation = (value: boolean) =>
+    setPrefs((prev) => ({ ...prev, useLocation: value }));
+
   return (
     <UserPrefsContext.Provider
-      value={{ prefs, toggleFavorite, isFavorite, setDarkMode, toggleDarkMode }}
+      value={{ prefs, toggleFavorite, isFavorite, setDarkMode, toggleDarkMode, setPass, setUseLocation }}
     >
       {children}
     </UserPrefsContext.Provider>

@@ -1,6 +1,7 @@
 // app/api/cron/scrape/route.ts
 import { scrapeColoradoSnow } from "@/lib/scrapeSnowReport";
 import { getRedis } from "@/lib/redis";
+import { generateMorningReport } from "@/lib/morningReport";
 
 export async function GET(req: Request) {
   const auth = req.headers.get("authorization");
@@ -23,10 +24,14 @@ export async function GET(req: Request) {
     await redis.set("last-scraped", timestamp);
     console.log("5. last-scraped saved");
 
+    const report = await generateMorningReport(data, timestamp);
+    await redis.set("morning-report", JSON.stringify(report));
+
     return Response.json({
       ok: true,
       resorts: data.length,
       timestamp,
+      report,
     });
   } catch (err) {
     console.error("CRON ERROR:", err);

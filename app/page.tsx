@@ -1,15 +1,21 @@
 "use client";
 
+import { useState } from "react";
 import useResorts from "@/hooks/useResorts";
 import { useUserPrefs } from "@/context/UserPrefsContext";
 import Image from "next/image";
 import ResortCard from "@/components/ResortCard";
+import ResortCardMini from "@/components/ResortCardMini";
 import ResortCardSkeleton from "@/components/ResortCardSkeleton";
 import LocationCard from "@/components/LocationCard";
+import UserPrefsCard from "@/components/UserPrefsCard";
+import SettingsModal from "@/components/SettingsModal";
+import MorningReport from "@/components/MorningReport";
 
 export default function Home() {
   const { data: resorts, isLoading } = useResorts();
   const { prefs } = useUserPrefs();
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   const favorites = resorts?.filter((r) =>
     prefs.favoriteResorts.includes(r.name),
@@ -33,29 +39,52 @@ export default function Home() {
         </div>
       </div>
 
+      {settingsOpen && <SettingsModal onClose={() => setSettingsOpen(false)} />}
+
       <div className="p-4 space-y-4">
-        <LocationCard />
+        <MorningReport />
 
-        {isLoading && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {Array.from({ length: 3 }).map((_, i) => (
-              <ResortCardSkeleton key={i} />
-            ))}
-          </div>
-        )}
-
-        {favorites && favorites.length > 0 && (
-          <div>
-            <h2 className="mb-2 text-xs font-semibold uppercase tracking-widest text-zinc-400">
-              Favorites
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {favorites.map((resort) => (
-                <ResortCard key={resort.name} resort={resort} />
-              ))}
+        {isLoading ? (
+          <>
+            {/* UserPrefsCard skeleton */}
+            <div className="rounded-2xl bg-white shadow-sm overflow-hidden animate-pulse">
+              <div className="h-1 w-full bg-zinc-100" />
+              <div className="p-4 flex items-center justify-between">
+                <div className="space-y-2">
+                  <div className="h-3 w-16 bg-zinc-100 rounded-full" />
+                  <div className="h-4 w-24 bg-zinc-100 rounded-full" />
+                </div>
+                <div className="h-7 w-24 bg-zinc-100 rounded-full" />
+              </div>
             </div>
-          </div>
+
+            {/* Resort card skeletons */}
+            <div>
+              <div className="h-3 w-20 bg-zinc-200 rounded-full mb-3 animate-pulse" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <ResortCardSkeleton key={i} />
+                ))}
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            {favorites && favorites.length > 0 && (
+              <div>
+                <h2 className="mb-2 text-xs font-semibold uppercase tracking-widest text-zinc-400">
+                  Favorites
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {favorites.map((resort) => (
+                    <ResortCardMini key={resort.name} resort={resort} />
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
         )}
+        {/* <LocationCard /> */}
       </div>
     </div>
   );

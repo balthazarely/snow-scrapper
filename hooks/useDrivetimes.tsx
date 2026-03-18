@@ -22,16 +22,16 @@ async function fetchDriveTime(
   return res.json();
 }
 
-export function useDriveTime(
-  userLat: number | null,
-  userLng: number | null,
-  destLat: number,
-  destLng: number,
-) {
-  return useQuery({
-    queryKey: ["drivetime", userLat, userLng, destLat, destLng],
-    queryFn: () => fetchDriveTime(userLat!, userLng!, destLat, destLng),
-    enabled: !!userLat && !!userLng, // only runs when user location exists
-    staleTime: 1000 * 60 * 15, // re-fetch after 15 mins
-  });
-}
+// export function useDriveTime(
+//   userLat: number | null,
+//   userLng: number | null,
+//   destLat: number,
+//   destLng: number,
+// ) {
+//   return useQuery({
+//     queryKey: ["drivetime", userLat, userLng, destLat, destLng],
+//     queryFn: () => fetchDriveTime(userLat!, userLng!, destLat, destLng),
+//     enabled: !!userLat && !!userLng, // only runs when user location exists
+//     staleTime: 1000 * 60 * 15, // re-fetch after 15 mins
+//   });
+// }

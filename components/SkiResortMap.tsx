@@ -7,6 +7,7 @@ import Link from "next/link";
 import useResorts from "@/hooks/useResorts";
 import { Resort } from "@/types/Resort";
 import PassBadge from "@/components/PassBadge";
+import { MdAcUnit } from "react-icons/md";
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN!;
 
@@ -222,12 +223,26 @@ export default function SkiMap() {
   return (
     <div style={{ width: "100%", height: "100%", position: "relative" }}>
       {isLoading && (
-        <div style={{
-          position: "absolute", top: "50%", left: "50%",
-          transform: "translate(-50%, -50%)", zIndex: 10,
-          color: "#666", fontSize: 14,
-        }}>
-          Loading resorts...
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/10 backdrop-blur-[2px]">
+          <div className="rounded-2xl bg-white shadow-xl overflow-hidden w-52">
+            <div className="h-1 w-full bg-gradient-to-r from-sky-400 to-orange-400" />
+            <div className="p-5 flex flex-col items-center gap-3">
+              <MdAcUnit className="text-sky-400 animate-spin" size={36} style={{ animationDuration: "3s" }} />
+              <div className="text-center">
+                <p className="text-sm font-semibold text-zinc-700">Loading resorts</p>
+                <p className="text-xs text-zinc-400 mt-0.5">Fetching snow conditions…</p>
+              </div>
+              <div className="flex gap-1.5">
+                {[0, 1, 2].map((i) => (
+                  <div
+                    key={i}
+                    className="h-1.5 w-1.5 rounded-full bg-sky-400 animate-bounce"
+                    style={{ animationDelay: `${i * 0.15}s` }}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
