@@ -224,13 +224,13 @@ export default function SkiMap() {
     <div style={{ width: "100%", height: "100%", position: "relative" }}>
       {isLoading && (
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/10 backdrop-blur-[2px]">
-          <div className="rounded-2xl bg-white shadow-xl overflow-hidden w-52">
+          <div className="rounded-2xl bg-white dark:bg-zinc-800 shadow-xl overflow-hidden w-52">
             <div className="h-1 w-full bg-gradient-to-r from-sky-400 to-orange-400" />
             <div className="p-5 flex flex-col items-center gap-3">
               <MdAcUnit className="text-sky-400 animate-spin" size={36} style={{ animationDuration: "3s" }} />
               <div className="text-center">
-                <p className="text-sm font-semibold text-zinc-700">Loading resorts</p>
-                <p className="text-xs text-zinc-400 mt-0.5">Fetching snow conditions…</p>
+                <p className="text-sm font-semibold text-zinc-700 dark:text-zinc-200">Loading resorts</p>
+                <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-0.5">Fetching snow conditions…</p>
               </div>
               <div className="flex gap-1.5">
                 {[0, 1, 2].map((i) => (
@@ -251,43 +251,43 @@ export default function SkiMap() {
       {/* Bottom info card */}
       {selected && (
         <div className="absolute bottom-[calc(5rem+env(safe-area-inset-bottom)+0.5rem)] left-4 right-4 z-10">
-          <div className="rounded-2xl bg-white shadow-lg overflow-hidden">
+          <div className="rounded-2xl bg-white dark:bg-zinc-800 shadow-lg overflow-hidden">
             <div className="h-1 w-full bg-gradient-to-r from-sky-400 to-orange-400" />
             <div className="p-4">
               <div className="flex items-start justify-between">
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="font-bold text-zinc-900">{selected.name}</h3>
+                    <h3 className="font-bold text-zinc-900 dark:text-white">{selected.name}</h3>
                     {selected.pass && <PassBadge pass={selected.pass as "Epic" | "Ikon"} />}
                   </div>
-                  <p className="text-xs text-zinc-400 mt-0.5 capitalize">{selected.pass ? `${selected.pass} Pass` : "No pass"}</p>
+                  <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-0.5 capitalize">{selected.pass ? `${selected.pass} Pass` : "No pass"}</p>
                 </div>
                 <button
                   onClick={() => setSelected(null)}
-                  className="text-zinc-300 hover:text-zinc-500 text-xl leading-none ml-2"
+                  className="text-zinc-300 dark:text-zinc-600 hover:text-zinc-500 dark:hover:text-zinc-400 text-xl leading-none ml-2"
                 >
                   ×
                 </button>
               </div>
 
-              <div className="mt-3 grid grid-cols-3 divide-x divide-zinc-100">
+              <div className="mt-3 grid grid-cols-3 divide-x divide-zinc-100 dark:divide-zinc-700">
                 <div className="text-center pr-2">
                   <p className="text-xl font-bold text-orange-400">{selected.snowfall3d}"</p>
-                  <p className="text-xs text-zinc-400 mt-0.5">3-day snow</p>
+                  <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-0.5">3-day snow</p>
                 </div>
                 <div className="text-center px-2">
-                  <p className="text-xl font-bold text-zinc-900">
+                  <p className="text-xl font-bold text-zinc-900 dark:text-white">
                     {selected.openLifts}
-                    <span className="text-sm font-normal text-zinc-300">/{selected.totalLifts}</span>
+                    <span className="text-sm font-normal text-zinc-300 dark:text-zinc-600">/{selected.totalLifts}</span>
                   </p>
-                  <p className="text-xs text-zinc-400 mt-0.5">lifts open</p>
+                  <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-0.5">lifts open</p>
                 </div>
                 <div className="text-center pl-2">
-                  <p className="text-xl font-bold text-zinc-900">
+                  <p className="text-xl font-bold text-zinc-900 dark:text-white">
                     {selected.openTrails}
-                    <span className="text-sm font-normal text-zinc-300">/{selected.totalTrails}</span>
+                    <span className="text-sm font-normal text-zinc-300 dark:text-zinc-600">/{selected.totalTrails}</span>
                   </p>
-                  <p className="text-xs text-zinc-400 mt-0.5">trails open</p>
+                  <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-0.5">trails open</p>
                 </div>
               </div>
 

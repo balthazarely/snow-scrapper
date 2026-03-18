@@ -4,17 +4,17 @@ import { useState } from "react";
 import useResorts from "@/hooks/useResorts";
 import { useUserPrefs } from "@/context/UserPrefsContext";
 import Image from "next/image";
-import ResortCard from "@/components/ResortCard";
 import ResortCardMini from "@/components/ResortCardMini";
 import ResortCardSkeleton from "@/components/ResortCardSkeleton";
 import LocationCard from "@/components/LocationCard";
 import UserPrefsCard from "@/components/UserPrefsCard";
 import SettingsModal from "@/components/SettingsModal";
 import MorningReport from "@/components/MorningReport";
+import { MdDarkMode, MdLightMode } from "react-icons/md";
 
 export default function Home() {
   const { data: resorts, isLoading } = useResorts();
-  const { prefs } = useUserPrefs();
+  const { prefs, toggleDarkMode } = useUserPrefs();
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   const favorites = resorts?.filter((r) =>
@@ -22,7 +22,7 @@ export default function Home() {
   );
 
   return (
-    <div className="bg-slate-100 min-h-full pb-[calc(5rem+env(safe-area-inset-bottom)+1rem)]">
+    <div className="bg-slate-100 dark:bg-zinc-900 min-h-full pb-[calc(5rem+env(safe-area-inset-bottom)+1rem)]">
       {/* Hero image */}
       <div className="relative h-56 w-full">
         <Image
@@ -37,6 +37,17 @@ export default function Home() {
           <h1 className="text-2xl font-bold text-white">Snow Scrapper</h1>
           <p className="text-sm text-white/70">Colorado snow conditions</p>
         </div>
+        {/* Dark mode toggle */}
+        <button
+          onClick={toggleDarkMode}
+          className="absolute top-4 right-4 flex items-center justify-center w-9 h-9 rounded-full bg-black/30 backdrop-blur-sm text-white hover:bg-black/50 transition-colors"
+        >
+          {prefs.darkMode ? (
+            <MdLightMode size={18} />
+          ) : (
+            <MdDarkMode size={18} />
+          )}
+        </button>
       </div>
 
       {settingsOpen && <SettingsModal onClose={() => setSettingsOpen(false)} />}
@@ -47,20 +58,20 @@ export default function Home() {
         {isLoading ? (
           <>
             {/* UserPrefsCard skeleton */}
-            <div className="rounded-2xl bg-white shadow-sm overflow-hidden animate-pulse">
-              <div className="h-1 w-full bg-zinc-100" />
+            <div className="rounded-2xl bg-white dark:bg-zinc-800 shadow-sm overflow-hidden animate-pulse">
+              <div className="h-1 w-full bg-zinc-100 dark:bg-zinc-700" />
               <div className="p-4 flex items-center justify-between">
                 <div className="space-y-2">
-                  <div className="h-3 w-16 bg-zinc-100 rounded-full" />
-                  <div className="h-4 w-24 bg-zinc-100 rounded-full" />
+                  <div className="h-3 w-16 bg-zinc-100 dark:bg-zinc-700 rounded-full" />
+                  <div className="h-4 w-24 bg-zinc-100 dark:bg-zinc-700 rounded-full" />
                 </div>
-                <div className="h-7 w-24 bg-zinc-100 rounded-full" />
+                <div className="h-7 w-24 bg-zinc-100 dark:bg-zinc-700 rounded-full" />
               </div>
             </div>
 
             {/* Resort card skeletons */}
             <div>
-              <div className="h-3 w-20 bg-zinc-200 rounded-full mb-3 animate-pulse" />
+              <div className="h-3 w-20 bg-zinc-200 dark:bg-zinc-700 rounded-full mb-3 animate-pulse" />
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {Array.from({ length: 8 }).map((_, i) => (
                   <ResortCardSkeleton key={i} />
@@ -70,9 +81,11 @@ export default function Home() {
           </>
         ) : (
           <>
+            {/* <UserPrefsCard onOpenSettings={() => setSettingsOpen(true)} /> */}
+
             {favorites && favorites.length > 0 && (
               <div>
-                <h2 className="mb-2 text-xs font-semibold uppercase tracking-widest text-zinc-400">
+                <h2 className="mb-2 text-xs font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
                   Favorites
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -84,7 +97,7 @@ export default function Home() {
             )}
           </>
         )}
-        {/* <LocationCard /> */}
+        <LocationCard />
       </div>
     </div>
   );

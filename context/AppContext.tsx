@@ -27,31 +27,31 @@ export function AppProvider({ children }: { children: ReactNode }) {
     console.log("[AppContext] requestLocation called");
 
     if (!navigator.geolocation) {
-      console.warn("[AppContext] Geolocation not supported");
+      // console.warn("[AppContext] Geolocation not supported");
       setLocationError("Geolocation not supported by your browser");
       return;
     }
 
-    console.log("[AppContext] Requesting position from browser...");
+    // console.log("[AppContext] Requesting position from browser...");
     setLocationLoading(true);
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude, accuracy } = position.coords;
-        console.log("[AppContext] Location success:", {
-          lat: latitude,
-          lng: longitude,
-          accuracyMeters: Math.round(accuracy),
-        });
+        // console.log("[AppContext] Location success:", {
+        //   lat: latitude,
+        //   lng: longitude,
+        //   accuracyMeters: Math.round(accuracy),
+        // });
         setUserLocation({ lat: latitude, lng: longitude });
         setLocationLoading(false);
         setLocationError(null);
       },
       (error) => {
-        console.error("[AppContext] Location error:", {
-          code: error.code,
-          message: error.message,
-        });
+        // console.error("[AppContext] Location error:", {
+        //   code: error.code,
+        //   message: error.message,
+        // });
         setLocationLoading(false);
         switch (error.code) {
           case error.PERMISSION_DENIED:

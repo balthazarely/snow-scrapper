@@ -26,7 +26,7 @@ export default function ResortsPage() {
     );
 
   return (
-    <div className="p-4 bg-slate-100 pb-[calc(5rem+env(safe-area-inset-bottom)+1rem)]">
+    <div className="p-4 bg-slate-100 dark:bg-zinc-900 pb-[calc(5rem+env(safe-area-inset-bottom)+1rem)]">
       {filterOpen && (
         <ResortFilterModal
           filters={filters}
@@ -45,8 +45,8 @@ export default function ResortsPage() {
           onClick={() => setFilterOpen(true)}
           className={`mt-1 flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-semibold transition-colors ${
             isFiltered
-              ? "border-sky-400 bg-sky-50 text-sky-600"
-              : "border-zinc-200 bg-white text-zinc-500 hover:border-zinc-300"
+              ? "border-sky-400 bg-sky-50 dark:bg-sky-950 text-sky-600 dark:text-sky-400"
+              : "border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 hover:border-zinc-300"
           }`}
         >
           <MdTune size={13} />

@@ -13,7 +13,7 @@ export default function PassBadge({ pass }: Props) {
       alt={`${pass} Pass`}
       width={20}
       height={8}
-      className="object-contain"
+      className="object-contain rounded-sm ring-1 ring-white/70"
     />
   );
 }

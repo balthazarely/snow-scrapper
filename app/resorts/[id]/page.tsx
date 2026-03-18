@@ -1,11 +1,10 @@
 "use client";
 import { useParams, useRouter } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query";
 import { MdArrowBack } from "react-icons/md";
 import PassBadge from "@/components/PassBadge";
-import { Resort } from "@/types/Resort";
 import { DailyForecast } from "@/types/ResortWeather";
 import { useResortWeather } from "@/hooks/useResortWeather";
+import useResorts from "@/hooks/useResorts";
 
 function dayLetter(dateStr: string): string {
   return new Date(dateStr + "T12:00:00").toLocaleDateString("en-US", { weekday: "narrow" });
@@ -39,11 +38,11 @@ function SnowBars({ daily }: { daily: DailyForecast[] }) {
           <div key={day.date} className="flex flex-col items-center gap-1">
             <div className="w-5 h-10 flex items-end">
               <div
-                className={`w-full rounded-sm ${hasSnow ? "bg-orange-400" : "bg-zinc-100"}`}
+                className={`w-full rounded-sm ${hasSnow ? "bg-orange-400" : "bg-zinc-100 dark:bg-zinc-700"}`}
                 style={{ height: hasSnow ? `${Math.max(heightPct, 15)}%` : "4px" }}
               />
             </div>
-            <span className="text-[10px] text-zinc-400 font-medium">{dayLetter(day.date)}</span>
+            <span className="text-[10px] text-zinc-400 dark:text-zinc-500 font-medium">{dayLetter(day.date)}</span>
           </div>
         );
       })}
@@ -53,7 +52,7 @@ function SnowBars({ daily }: { daily: DailyForecast[] }) {
 
 function Card({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={`rounded-2xl bg-white shadow-sm overflow-hidden ${className}`}>
+    <div className={`rounded-2xl bg-white dark:bg-zinc-800 shadow-sm overflow-hidden ${className}`}>
       <div className="h-1 w-full bg-gradient-to-r from-sky-400 to-orange-400" />
       <div className="p-4">{children}</div>
     </div>
@@ -62,39 +61,45 @@ function Card({ children, className = "" }: { children: React.ReactNode; classNa
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-xs font-semibold uppercase tracking-widest text-zinc-400 mb-3">{children}</p>
+    <p className="text-xs font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-3">{children}</p>
   );
 }
 
 export default function ResortPage() {
   const { id } = useParams();
   const router = useRouter();
-  const queryClient = useQueryClient();
 
-  const resorts = queryClient.getQueryData<Resort[]>(["resorts"]);
+  const { data: resorts, isLoading: resortsLoading } = useResorts();
   const resort = resorts?.find((r) => r.id === id);
 
-  const { data: weather, isLoading } = useResortWeather(resort?.lat ?? 0, resort?.lng ?? 0);
+  const { data: weather, isLoading: weatherLoading } = useResortWeather(resort?.lat ?? 0, resort?.lng ?? 0);
+  const isLoading = weatherLoading;
+
+  if (resortsLoading) return (
+    <div className="p-4 bg-slate-100 dark:bg-zinc-900 min-h-full flex items-center justify-center">
+      <p className="text-sm text-zinc-400">Loading resort...</p>
+    </div>
+  );
 
   if (!resort) return <div className="p-4 text-zinc-400">Resort not found</div>;
 
   return (
-    <div className="p-4 pb-[calc(5rem+env(safe-area-inset-bottom)+1rem)]">
+    <div className="bg-slate-100 dark:bg-zinc-900 min-h-full p-4 pb-[calc(5rem+env(safe-area-inset-bottom)+1rem)]">
 
       {/* Header */}
       <div className="mb-4">
         <button
           onClick={() => router.back()}
-          className="flex items-center gap-1 text-sm text-zinc-400 hover:text-zinc-600 transition-colors mb-3"
+          className="flex items-center gap-1 text-sm text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors mb-3"
         >
           <MdArrowBack className="text-lg" />
           Back
         </button>
         <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-bold text-zinc-900">{resort.name}</h1>
+          <h1 className="text-2xl font-bold text-zinc-900 dark:text-white">{resort.name}</h1>
           <PassBadge pass={resort.pass} />
         </div>
-        <p className="text-sm text-zinc-400 mt-0.5">
+        <p className="text-sm text-zinc-400 dark:text-zinc-500 mt-0.5">
           {resort.base.toLocaleString()}–{resort.summit.toLocaleString()} ft · Colorado
         </p>
       </div>
@@ -107,36 +112,36 @@ export default function ResortPage() {
           {/* Mountain status card */}
           <Card>
             <SectionLabel>Mountain Status</SectionLabel>
-            <div className="grid grid-cols-3 divide-x divide-zinc-100">
+            <div className="grid grid-cols-3 divide-x divide-zinc-100 dark:divide-zinc-700">
               <div className="text-center pr-3">
                 <p className="text-2xl font-bold text-orange-400 leading-none">{resort.snowfall3d}"</p>
-                <p className="text-xs text-zinc-400 mt-1">3-day snow</p>
+                <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-1">3-day snow</p>
               </div>
               <div className="text-center px-3">
                 <p className="text-2xl font-bold text-orange-400 leading-none">{resort.baseDepth}"</p>
-                <p className="text-xs text-zinc-400 mt-1">base depth</p>
+                <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-1">base depth</p>
               </div>
               <div className="text-center pl-3">
                 <p className="text-2xl font-bold leading-none">
-                  <span className="text-zinc-900">{resort.openLifts}</span>
-                  <span className="text-zinc-300 font-normal text-lg">/{resort.totalLifts}</span>
+                  <span className="text-zinc-900 dark:text-white">{resort.openLifts}</span>
+                  <span className="text-zinc-300 dark:text-zinc-600 font-normal text-lg">/{resort.totalLifts}</span>
                 </p>
-                <p className="text-xs text-zinc-400 mt-1">lifts open</p>
+                <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-1">lifts open</p>
               </div>
             </div>
-            <div className="mt-3 pt-3 border-t border-zinc-100 flex items-center justify-between">
-              <span className="capitalize text-sm text-zinc-500">{resort.conditions}</span>
-              <span className="text-sm text-zinc-400">{resort.openTrails}/{resort.totalTrails} trails</span>
+            <div className="mt-3 pt-3 border-t border-zinc-100 dark:border-zinc-700 flex items-center justify-between">
+              <span className="capitalize text-sm text-zinc-500 dark:text-zinc-400">{resort.conditions}</span>
+              <span className="text-sm text-zinc-400 dark:text-zinc-500">{resort.openTrails}/{resort.totalTrails} trails</span>
             </div>
           </Card>
 
           {/* Current weather card */}
           {isLoading ? (
-            <div className="rounded-2xl bg-white shadow-sm overflow-hidden animate-pulse">
-              <div className="h-1 w-full bg-zinc-100" />
+            <div className="rounded-2xl bg-white dark:bg-zinc-800 shadow-sm overflow-hidden animate-pulse">
+              <div className="h-1 w-full bg-zinc-100 dark:bg-zinc-700" />
               <div className="p-4 space-y-3">
-                <div className="h-3 w-24 bg-zinc-100 rounded-full" />
-                <div className="h-10 w-1/2 bg-zinc-100 rounded-xl" />
+                <div className="h-3 w-24 bg-zinc-100 dark:bg-zinc-700 rounded-full" />
+                <div className="h-10 w-1/2 bg-zinc-100 dark:bg-zinc-700 rounded-xl" />
               </div>
             </div>
           ) : weather && (
@@ -144,20 +149,20 @@ export default function ResortPage() {
               <SectionLabel>Right Now</SectionLabel>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-4xl font-bold text-zinc-900">
-                    {weather.current.temp}°<span className="text-2xl font-normal text-zinc-400">F</span>
+                  <p className="text-4xl font-bold text-zinc-900 dark:text-white">
+                    {weather.current.temp}°<span className="text-2xl font-normal text-zinc-400 dark:text-zinc-500">F</span>
                   </p>
-                  <p className="text-sm text-zinc-400 mt-0.5">{weatherLabel(weather.current.weatherCode)}</p>
+                  <p className="text-sm text-zinc-400 dark:text-zinc-500 mt-0.5">{weatherLabel(weather.current.weatherCode)}</p>
                 </div>
                 <div className="text-right space-y-2">
                   <div>
-                    <p className="text-sm font-semibold text-zinc-700">{weather.current.windSpeed} mph {windDir(weather.current.windDirection)}</p>
-                    <p className="text-xs text-zinc-400">wind</p>
+                    <p className="text-sm font-semibold text-zinc-700 dark:text-zinc-200">{weather.current.windSpeed} mph {windDir(weather.current.windDirection)}</p>
+                    <p className="text-xs text-zinc-400 dark:text-zinc-500">wind</p>
                   </div>
                   {weather.current.snowfall > 0 && (
                     <div>
                       <p className="text-sm font-semibold text-sky-500">{(weather.current.snowfall / 2.54).toFixed(1)}" falling</p>
-                      <p className="text-xs text-zinc-400">now</p>
+                      <p className="text-xs text-zinc-400 dark:text-zinc-500">now</p>
                     </div>
                   )}
                 </div>
@@ -171,19 +176,19 @@ export default function ResortPage() {
           <Card>
             <SectionLabel>7-Day Forecast</SectionLabel>
             <div className="flex items-end justify-between mb-4">
-              <p className="text-xs text-zinc-400">Snowfall forecast</p>
+              <p className="text-xs text-zinc-400 dark:text-zinc-500">Snowfall forecast</p>
               <SnowBars daily={weather.daily} />
             </div>
             <div className="space-y-3">
               {weather.daily.map((day, i) => (
                 <div key={day.date} className="flex items-center justify-between">
                   <div className="w-10">
-                    <p className={`text-sm font-semibold ${i === 0 ? "text-sky-500" : "text-zinc-500"}`}>
+                    <p className={`text-sm font-semibold ${i === 0 ? "text-sky-500" : "text-zinc-500 dark:text-zinc-400"}`}>
                       {i === 0 ? "Today" : dayLetter(day.date)}
                     </p>
                   </div>
                   <div className="flex-1 mx-4">
-                    <div className="h-1.5 rounded-full bg-zinc-100 overflow-hidden">
+                    <div className="h-1.5 rounded-full bg-zinc-100 dark:bg-zinc-700 overflow-hidden">
                       <div
                         className="h-full rounded-full bg-gradient-to-r from-sky-300 to-orange-300"
                         style={{
@@ -201,8 +206,8 @@ export default function ResortPage() {
                     )}
                     {day.snowfallSum === 0 && <span className="w-8" />}
                     <div className="w-14 flex justify-between">
-                      <span className="text-sm text-zinc-400">{day.tempMin}°</span>
-                      <span className="text-sm font-semibold text-zinc-700">{day.tempMax}°</span>
+                      <span className="text-sm text-zinc-400 dark:text-zinc-500">{day.tempMin}°</span>
+                      <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-200">{day.tempMax}°</span>
                     </div>
                   </div>
                 </div>
