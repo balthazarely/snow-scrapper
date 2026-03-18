@@ -62,11 +62,11 @@ export default function ResortsPage() {
       {/* Active filter pills */}
       <div className="flex flex-wrap gap-2 mt-3">
         {filters.pass !== "All" && (
-          <span className="px-2.5 py-1 rounded-full bg-sky-100 text-sky-700 text-xs font-semibold">
+          <span className="px-2.5 py-1 rounded-full bg-sky-100 dark:bg-sky-900 text-sky-700 dark:text-sky-300 text-xs font-semibold">
             {filters.pass} Pass
           </span>
         )}
-        <span className="px-2.5 py-1 rounded-full bg-sky-100 text-sky-700 text-xs font-semibold">
+        <span className="px-2.5 py-1 rounded-full bg-sky-100 dark:bg-sky-900 text-sky-700 dark:text-sky-300 text-xs font-semibold">
           {filters.sort === "snow" ? "New Snow" : "A–Z"}
         </span>
       </div>
