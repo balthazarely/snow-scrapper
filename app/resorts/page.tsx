@@ -11,7 +11,7 @@ import { MdTune } from "react-icons/md";
 const DEFAULT_FILTERS: ResortFilters = { pass: "All", sort: "name" };
 
 export default function ResortsPage() {
-  const { data: resorts, isLoading } = useResorts();
+  const { data: resorts, isLoading, isError } = useResorts();
   const [filterOpen, setFilterOpen] = useState(false);
   const [filters, setFilters] = useState<ResortFilters>(DEFAULT_FILTERS);
 
@@ -70,6 +70,12 @@ export default function ResortsPage() {
           {filters.sort === "snow" ? "New Snow" : "A–Z"}
         </span>
       </div>
+
+      {isError && (
+        <div className="mt-4 rounded-2xl bg-amber-50 dark:bg-amber-950 border border-amber-100 dark:border-amber-900 px-4 py-3 text-sm text-amber-600 dark:text-amber-400">
+          Could not load resort data. You may be offline and the cached data has expired.
+        </div>
+      )}
 
       {isLoading && (
         <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">

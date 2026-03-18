@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useAskAgent } from "@/hooks/useAskAgent";
 import { useUserPrefs } from "@/context/UserPrefsContext";
-import AgentSettingsModal from "@/components/AgentSettingsModal";
 import { MdTune, MdLocationOn, MdLocationOff, MdConfirmationNumber, MdLocationDisabled } from "react-icons/md";
 import Image from "next/image";
 import { useApp } from "@/context/AppContext";
@@ -15,10 +14,13 @@ const QUICK_QUESTIONS = [
   "Best resort for beginners?",
 ];
 
-export default function AIAgent() {
+type Props = {
+  onOpenSettings: () => void;
+};
+
+export default function AIAgent({ onOpenSettings }: Props) {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState<string | null>(null);
-  const [settingsOpen, setSettingsOpen] = useState(false);
 
   const { prefs } = useUserPrefs();
   const { locationError } = useApp();
@@ -39,14 +41,10 @@ export default function AIAgent() {
 
   return (
     <div className="mt-4 space-y-4">
-      {settingsOpen && (
-        <AgentSettingsModal onClose={() => setSettingsOpen(false)} />
-      )}
-
       {/* Filter chips */}
       <div className="flex items-center gap-2 flex-wrap">
         <button
-          onClick={() => setSettingsOpen(true)}
+          onClick={onOpenSettings}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-semibold transition-colors ${
             prefs.pass
               ? "border-sky-400 bg-sky-50 dark:bg-sky-950 text-sky-700 dark:text-sky-400"
@@ -57,7 +55,7 @@ export default function AIAgent() {
             <Image
               src={`/${prefs.pass}.png`}
               alt={prefs.pass}
-              width={prefs.pass === "Ikon" ? 16 : 22}
+              width={16}
               height={8}
               className="object-contain rounded-sm ring-1 ring-white/70"
             />
@@ -68,7 +66,7 @@ export default function AIAgent() {
         </button>
 
         <button
-          onClick={() => setSettingsOpen(true)}
+          onClick={onOpenSettings}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-semibold transition-colors ${
             locationDenied
               ? "border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400"
@@ -86,7 +84,7 @@ export default function AIAgent() {
         </button>
 
         <button
-          onClick={() => setSettingsOpen(true)}
+          onClick={onOpenSettings}
           className="ml-auto flex items-center gap-1 px-2.5 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors"
         >
           <MdTune size={13} />

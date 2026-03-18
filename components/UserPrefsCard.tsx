@@ -24,7 +24,7 @@ export default function UserPrefsCard({ onOpenSettings }: Props) {
               <Image
                 src={`/${prefs.pass}.png`}
                 alt={prefs.pass}
-                width={prefs.pass === "Ikon" ? 32 : 44}
+                width={32}
                 height={16}
                 className="object-contain rounded-sm ring-1 ring-white/70"
               />

@@ -17,7 +17,7 @@ const withPWA = require("@ducanh2912/next-pwa").default({
       handler: "StaleWhileRevalidate",
       options: {
         cacheName: "snow-report-cache",
-        expiration: { maxAgeSeconds: 60 * 30 },
+        expiration: { maxAgeSeconds: 60 * 60 * 6 },
       },
     },
     {

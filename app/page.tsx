@@ -10,10 +10,12 @@ import LocationCard from "@/components/LocationCard";
 import SettingsModal from "@/components/SettingsModal";
 import MorningReport from "@/components/MorningReport";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
+import { useOnlineStatus } from "@/hooks/useOnlineStatus";
 
 export default function Home() {
-  const { data: resorts, isLoading } = useResorts();
+  const { data: resorts, isLoading, isError } = useResorts();
   const { prefs, toggleDarkMode } = useUserPrefs();
+  const isOnline = useOnlineStatus();
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   const favorites = resorts?.filter((r) =>
@@ -36,6 +38,12 @@ export default function Home() {
           <h1 className="text-2xl font-bold text-white">Snow Scraper</h1>
           <p className="text-sm text-white/70">Colorado snow conditions</p>
         </div>
+        {/* Online status */}
+        <div className="absolute top-4 left-4 flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-black/30 backdrop-blur-sm text-white text-xs font-semibold">
+          <span className={`h-2 w-2 rounded-full ${isOnline ? "bg-emerald-400" : "bg-red-400 animate-pulse"}`} />
+          {isOnline ? "Online" : "Offline"}
+        </div>
+
         {/* Dark mode toggle */}
         <button
           onClick={toggleDarkMode}
@@ -53,6 +61,12 @@ export default function Home() {
 
       <div className="p-4 space-y-4">
         <MorningReport />
+
+        {isError && (
+          <div className="rounded-2xl bg-amber-50 dark:bg-amber-950 border border-amber-100 dark:border-amber-900 px-4 py-3 text-sm text-amber-600 dark:text-amber-400">
+            Could not load resort data. You may be offline and the cached data has expired.
+          </div>
+        )}
 
         {isLoading ? (
           <>

@@ -23,13 +23,13 @@ const SORT_OPTIONS: { value: SortOption; label: string }[] = [
 export default function ResortFilterModal({ filters, onChange, onClose }: Props) {
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center"
+      className="fixed inset-0 z-[60] flex items-center justify-center"
       onClick={onClose}
     >
       <div className="absolute inset-0 bg-black/50" />
 
       <div
-        className="relative z-10 w-full sm:max-w-sm bg-white dark:bg-zinc-900 rounded-t-2xl sm:rounded-2xl p-6 mb-[calc(5rem+env(safe-area-inset-bottom))] sm:mb-0"
+        className="relative z-10 w-full max-w-sm bg-white dark:bg-zinc-900 rounded-2xl p-6 mx-4"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
