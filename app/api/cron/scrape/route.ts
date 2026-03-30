@@ -24,14 +24,14 @@ export async function GET(req: Request) {
     await redis.set("last-scraped", timestamp);
     console.log("5. last-scraped saved");
 
-    const report = await generateMorningReport(data, timestamp);
-    await redis.set("morning-report", JSON.stringify(report));
+    // const report = await generateMorningReport(data, timestamp);
+    // await redis.set("morning-report", JSON.stringify(report));
 
     return Response.json({
       ok: true,
       resorts: data.length,
       timestamp,
-      report,
+      report: "Morning report on hold until the start of 26/27 season",
     });
   } catch (err) {
     console.error("CRON ERROR:", err);
